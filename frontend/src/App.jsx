@@ -6,10 +6,12 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import Dashboard from './pages/Dashboard'
 import Header from './components/Header'
+import SiteFooter from './components/Footer'
 
 
 function App() {
 
+  
   return (
     <>
     <BrowserRouter>
@@ -18,11 +20,12 @@ function App() {
       <Route path='/' element={<Home/>}/>
       <Route path='/about' element={<About/>}/>
       <Route path='/project' element={<Project/>}/>
-      <Route path='/signin' element={<SignIn/>}/>
-      <Route path='/signup' element={<SignUp/>}/>
+      <Route path='/sign-in' element={<SignIn/>}/>
+      <Route path='/sign-up' element={<SignUp/>}/>
       <Route path='/dashboard' element={<Dashboard/>}/>
       <Route path='/profile' element={<Home/>}/>
     </Routes>
+      <SiteFooter/>
     </BrowserRouter>
     </>
   )

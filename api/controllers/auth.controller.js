@@ -9,8 +9,13 @@ export const signup = async(req,res,next) => {
     if(!username || !email || !password || username==='' || email ==='' || password ===''){
         return next(errorHandler(400,'All fields are required'))
     }
+    const user = await User.findOne({email})
+    if(user){
+        return next(errorHandler(400,'User is already exist with this same email'))
+    }
+    
     const hashPassword =  bcryptjs.hashSync(password,8)
-    const newUser =  User({username,email,password:hashPassword})
+    const newUser =  new User({username,email,password:hashPassword})
 
 
     try {

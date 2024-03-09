@@ -1,15 +1,16 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
-import { Link } from 'react-router-dom';
+import { Link,useLocation } from 'react-router-dom';
 import { CiSearch } from "react-icons/ci";
 import { FaMoon } from "react-icons/fa";
 
 const Header = () => {
+  const pathname = useLocation().pathname;
   return (
-    <Navbar fluid rounded border >
+    <Navbar fluid  border className='shadow'>
     
-    <Navbar.Brand>
+    <Navbar.Brand as={'div'}>
         <Link to='/'>
-      <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite React</span>
+      <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Blogs</span>
       </Link>
     </Navbar.Brand>
     <form className='ml-auto md:mr-8'>
@@ -25,7 +26,7 @@ const Header = () => {
         <Button className='px-2 mr-2 hidden sm:inline-block h-[40px] w-[40px] text-center' color='gray' size={30} pill>
             <FaMoon className='justify-center ml-1'/>
         </Button>
-        <Link to='/sign-in' className='mr-4'><Button gradientDuoTone='purpleToBlue' rounded>Sign In</Button></Link>
+        <Link to='/sign-in' className='mr-4'><Button gradientDuoTone='purpleToBlue' outline >Sign In</Button></Link>
       <Dropdown
         arrowIcon={false}
         inline
@@ -46,13 +47,13 @@ const Header = () => {
       <Navbar.Toggle />
     </div>
     <Navbar.Collapse className=' md:mr-8'>
-      <Navbar.Link href="#" active>
-        Home
+      <Navbar.Link  as={'div'} active={pathname === '/'}>
+        <Link to="/"> Home</Link>
+       
       </Navbar.Link>
-      <Navbar.Link href="#">About</Navbar.Link>
-      <Navbar.Link href="#">Services</Navbar.Link>
-      <Navbar.Link href="#">Pricing</Navbar.Link>
-      <Navbar.Link href="#">Contact</Navbar.Link>
+      <Navbar.Link as={'div'}   active={pathname === '/about'}><Link to="/about">About</Link></Navbar.Link>
+      <Navbar.Link as={'div'}   active={pathname === '/project'}><Link to="/project">Projects</Link></Navbar.Link>
+      <Navbar.Link  as={'div'}  active={pathname === '/profile'}><Link to="/profile">Profile</Link></Navbar.Link>
     </Navbar.Collapse>
 
   </Navbar>
