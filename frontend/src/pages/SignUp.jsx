@@ -24,10 +24,9 @@ const SignUp = () => {
       })
 
       const resData = await response.json();
-      
-      if(resData.status){
-        navigate('/')
-        console.log('signupRes..',resData);
+
+      if(response.ok){
+        navigate('/sign-in')
       }else{
         setLoading(false)
         setErrorMessage(resData.message)

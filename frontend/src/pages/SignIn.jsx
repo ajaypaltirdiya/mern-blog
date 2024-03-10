@@ -1,12 +1,49 @@
-import { Button, Label, TextInput } from 'flowbite-react';
-import { Link } from 'react-router-dom';
+import { Button, Label, Spinner, TextInput } from 'flowbite-react';
+import { Link,useNavigate } from 'react-router-dom';
 import {useForm} from 'react-hook-form';
+import { signInStart, signInSuccess, signInFailure } from '../redux/user/user';
+import { useDispatch,useSelector } from 'react-redux';
+
 
 const SignIn = () => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
+
+  const {loading,error:errorMessage, currentUser} = useSelector(state => state.user)
+  console.log('currentUser..',currentUser)
   const {register,handleSubmit,formState:{errors}} = useForm({defaultValues:{email:'',password:''}});
 
-  const submitForm = (data) => console.log('data...',data)
+  const submitForm = async(data) => {
+    try {
+      dispatch(signInStart())
+      const response = await fetch('/api/auth/signin',{
+        method:'POST',
+        headers:{
+          'Content-type':'application/json'
+        },
+        body:JSON.stringify(data)
+      })
+
+      const resData = await response.json();
+      
+      if(response.ok){
+        dispatch(signInSuccess(resData))
+        navigate('/')
+      }else{
+        dispatch(signInFailure(resData.message))
+      }
+
+    } catch (error) {
+      dispatch(signInFailure(error))
+        console.log(error)
+    }
+  }
+
+
   return (
+    <>
+      
+
     <div className="min-h-screen flex flex-col items-center justify-center">
       <h1 className='text-center my-4 font-bold text-3xl mt-[-35px]'>Sign In</h1>
 
@@ -27,12 +64,18 @@ const SignIn = () => {
         {errors.password && <span className='text-sm text-red-600 mt-1'>{errors.password.message}</span>}
       </div>
       
-      <Button gradientDuoTone="purpleToBlue" type="submit">Submit</Button>
+      <Button gradientDuoTone="purpleToBlue" disabled={loading} type="submit">{loading ? <><Spinner aria-label="Default status example" /> Loading...</> :'Sign In'}</Button>
     </form>
+    <div className="mt-4">
+      {errorMessage && <h4 className='text-center text-red-400 font-bold'>{errorMessage}</h4>}
+    </div>
     <div className="mt-4">
       <span>{`Don't`} have an account? <Link to="/sign-up" className='font-bold text-pink-900'>Sign Up</Link></span>
     </div>
+
+        
     </div>
+    </>
   )
 }
 
